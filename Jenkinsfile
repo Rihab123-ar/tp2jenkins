@@ -4,28 +4,38 @@ pipeline {
     maven 'maven'
   }
   stages {
-    stage ("Clean up") {
+    stage('Clean workspace') {
       steps {
         deleteDir()
       }
     }
-    stage ("Clone repo") {
+    
+    stage('Clone repository') {
       steps {
-        bat "git clone https://github.com/Rihab123-ar/tp2jenkins.git"
+        bat 'git clone https://github.com/Rihab123-ar/tp2jenkins.git'
       }
     }
-    stage ("Generate backend image") {
+    
+    stage('Build and package') {
       steps {
-        dir("exp1-spring") {
-          bat "mvn clean install"
-          bat "docker build -t docexp1-spring ."
+        dir('tp2jenkins/exp1-spring') {  // Notez le chemin modifié
+          bat 'mvn clean install'
         }
       }
     }
-    stage ("Run docker compose") {
+    
+    stage('Build Docker image') {
       steps {
-        dir("exp1-spring") {
-          bat "docker compose up -d"
+        dir('tp2jenkins/exp1-spring') {
+          bat 'docker build -t docexp1-spring .'
+        }
+      }
+    }
+    
+    stage('Deploy with Docker Compose') {
+      steps {
+        dir('tp2jenkins/exp1-spring') {
+          bat 'docker compose up -d'
         }
       }
     }
