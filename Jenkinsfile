@@ -17,11 +17,8 @@ pipeline {
     }
     
     stage('Build and package') {
-  steps {
-    bat 'mvn clean install'  // Plus besoin de dir() car pom.xml est à la racine
-
-  }
-}
+      steps {
+        bat 'mvn clean install'  // Plus besoin de dir() car pom.xml est à la racine
       }
     }
     
