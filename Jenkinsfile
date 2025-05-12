@@ -17,10 +17,13 @@ pipeline {
     }
     
     stage('Build and package') {
-      steps {
-        bat 'mvn clean install'  // Plus besoin de dir() car pom.xml est à la racine
-      }
+  steps {
+    dir('tp2jenkins/exp1-spring') {
+      bat 'mvn clean install'  // Exécuter Maven dans le répertoire où se trouve le pom.xml
     }
+  }
+}
+
     
     stage('Build Docker image') {
       steps {
