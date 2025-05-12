@@ -16,11 +16,11 @@ pipeline {
       }
     }
     
-    stage('Build and package') {
-      steps {
-        dir('tp2jenkins/exp1-spring') {  // Notez le chemin modifié
-          bat 'mvn clean install'
-        }
+   stage('Build and package') {
+  steps {
+    bat 'mvn clean install'  # Plus besoin de dir() car pom.xml est à la racine
+  }
+}
       }
     }
     
