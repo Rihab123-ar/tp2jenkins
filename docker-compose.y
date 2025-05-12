@@ -1,0 +1,7 @@
+services:
+
+  spring-boot-app:
+
+    image: docexp1-spring
+    ports:
+      - "0.0.0.0:8084:8080"
