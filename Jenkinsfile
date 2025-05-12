@@ -6,29 +6,28 @@ pipeline {
   stages {
     stage('Clean workspace') {
       steps {
-        deleteDir()
+        sh 'rm -rf *'  // Supprime tous les fichiers et dossiers dans le répertoire de travail
       }
     }
     
     stage('Clone repository') {
       steps {
-        bat 'git clone https://github.com/Rihab123-ar/tp2jenkins.git'
+        sh 'git clone https://github.com/Rihab123-ar/tp2jenkins.git'
       }
     }
     
- stage('Build and package') {
-  steps {
-    dir('tp2jenkins/exp1-spring') {  // Assurez-vous que c'est le bon répertoire
-      bat 'mvn clean install'  // Exécuter Maven dans le répertoire contenant le pom.xml
+    stage('Build and package') {
+      steps {
+        dir('tp2jenkins/exp1-spring') {  // Assurez-vous que c'est le bon répertoire
+          sh 'mvn clean install'  // Exécuter Maven dans le répertoire contenant le pom.xml
+        }
+      }
     }
-  }
-}
-
     
     stage('Build Docker image') {
       steps {
         dir('tp2jenkins/exp1-spring') {
-          bat 'docker build -t docexp1-spring .'
+          sh 'docker build -t docexp1-spring .'
         }
       }
     }
@@ -36,7 +35,7 @@ pipeline {
     stage('Deploy with Docker Compose') {
       steps {
         dir('tp2jenkins/exp1-spring') {
-          bat 'docker compose up -d'
+          sh 'docker-compose up -d'
         }
       }
     }
