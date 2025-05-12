@@ -16,10 +16,10 @@ pipeline {
       }
     }
     
-    stage('Build and package') {
+   stage('Build and package') {
   steps {
-    dir('tp2jenkins/exp1-spring') {
-      bat 'mvn clean install'  // Exécuter Maven dans le répertoire où se trouve le pom.xml
+    dir('tp2jenkins/exp1-spring') {  // Assurez-vous que c'est le bon répertoire
+      bat 'mvn clean install'  // Exécuter Maven dans le répertoire contenant le pom.xml
     }
   }
 }
