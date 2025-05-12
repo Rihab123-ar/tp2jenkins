@@ -10,9 +10,9 @@ pipeline {
         stage('Build and package with Maven') {
             steps {
                 echo '📦 Construction du projet avec Maven...'
-                dir("${env.PROJECT_DIR}") {
-                    sh 'mvn clean install'
-                }
+                dir('tp2jenkins/exp1-spring') {
+    sh 'mvn clean install'
+}
             }
         }
 
