@@ -16,9 +16,15 @@ pipeline {
       }
     }
     
+    stage('Check POM existence') {
+      steps {
+        sh 'ls tp2jenkins/exp1-spring/pom.xml'  // Vérifie si le pom.xml existe
+      }
+    }
+    
     stage('Build and package') {
       steps {
-        dir('tp2jenkins/exp1-spring') {  // Assurez-vous que c'est le bon répertoire
+        dir('tp2jenkins/exp1-spring') {
           sh 'mvn clean install'  // Exécuter Maven dans le répertoire contenant le pom.xml
         }
       }
