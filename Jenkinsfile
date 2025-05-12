@@ -1,25 +1,30 @@
 pipeline {
-    agent any  // Assurez-vous que Jenkins utilise un agent qui exécute Ubuntu
+    agent any
+
+    environment {
+        PROJECT_DIR = "tp2jenkins/exp1-spring"
+        DOCKER_IMAGE = "docexp1-spring"
+    }
 
     stages {
         stage('Clean workspace') {
             steps {
-                // Supprimer les fichiers dans le workspace
+                echo '🧹 Nettoyage du workspace...'
                 sh 'rm -rf *'
             }
         }
 
         stage('Clone repository') {
             steps {
-                // Cloner votre dépôt Git
+                echo '🔄 Clonage du dépôt Git...'
                 sh 'git clone https://github.com/Rihab123-ar/tp2jenkins.git'
             }
         }
 
-        stage('Build and package') {
+        stage('Build and package with Maven') {
             steps {
-                // Exécuter Maven pour la construction du projet
-                dir('tp2jenkins/exp1-spring') {
+                echo '📦 Construction du projet avec Maven...'
+                dir("${env.PROJECT_DIR}") {
                     sh 'mvn clean install'
                 }
             }
@@ -27,20 +32,29 @@ pipeline {
 
         stage('Build Docker image') {
             steps {
-                // Construire l'image Docker
-                dir('tp2jenkins/exp1-spring') {
-                    sh 'docker build -t docexp1-spring .'
+                echo "🐳 Construction de l'image Docker..."
+                dir("${env.PROJECT_DIR}") {
+                    sh "docker build -t ${env.DOCKER_IMAGE} ."
                 }
             }
         }
 
         stage('Deploy with Docker Compose') {
             steps {
-                // Lancer Docker Compose pour déployer
-                dir('tp2jenkins/exp1-spring') {
+                echo '🚀 Déploiement avec Docker Compose...'
+                dir("${env.PROJECT_DIR}") {
                     sh 'docker-compose up -d'
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline exécuté avec succès !'
+        }
+        failure {
+            echo '❌ Échec du pipeline. Vérifiez les logs.'
         }
     }
 }
