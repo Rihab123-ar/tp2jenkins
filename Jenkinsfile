@@ -17,17 +17,16 @@ pipeline {
     }
     
     stage('Build and package') {
-      steps {
-        // Le pom.xml est à la racine du projet cloné
-        dir('tp2jenkins') {
-          bat 'mvn clean install'
-        }
+  steps {
+    bat 'mvn clean install'  # Plus besoin de dir() car pom.xml est à la racine
+  }
+}
       }
     }
     
     stage('Build Docker image') {
       steps {
-        dir('tp2jenkins') {
+        dir('tp2jenkins/exp1-spring') {
           bat 'docker build -t docexp1-spring .'
         }
       }
@@ -35,7 +34,7 @@ pipeline {
     
     stage('Deploy with Docker Compose') {
       steps {
-        dir('tp2jenkins') {
+        dir('tp2jenkins/exp1-spring') {
           bat 'docker compose up -d'
         }
       }
