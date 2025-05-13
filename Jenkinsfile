@@ -1,16 +1,17 @@
 pipeline {
     agent any
-
-    environment {
-        PROJECT_DIR = "exp1-spring"
-        DOCKER_IMAGE = "docexp1-spring"
+    tools {
+        maven 'maven'
     }
-
     stages {
-        stage('Build and package with Maven') {
+        stage ("Clean up") {
             steps {
-                echo '📦 Construction du projet avec Maven...'
-                dir('tp2jenkins/exp1-spring') {
+                deleteDir()
+            }
+        }
+         stage ("Clone repo") {
+             steps {
+                 sh "git clone https://github.com/
     sh 'mvn clean install'
 }
             }
@@ -37,10 +38,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline exécuté avec succès !'
+            echo 'Pipeline exécuté avec succès !'
         }
         failure {
-            echo '❌ Échec du pipeline. Vérifiez les logs.'
+            echo 'Échec du pipeline. Vérifiez les logs.'
         }
     }
 }
