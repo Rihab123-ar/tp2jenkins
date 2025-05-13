@@ -11,37 +11,24 @@ pipeline {
         }
          stage ("Clone repo") {
              steps {
-                 sh "git clone https://github.com/
-    sh 'mvn clean install'
-}
-            }
-        }
-
-        stage('Build Docker image') {
+                 sh "git clone https://github.com/Rihab123-ar/tp2jenkins.git
+             }
+         }
+         stage ("Generate backend image") {
+             steps {
+                 dir("exp1-spring"){
+                     sh "mvn clean install"
+                     sh "docker build -t docexp1-spring ."
+                 }
+             }
+         }
+        stage ("Run docker compose") {
             steps {
-                echo "🐳 Construction de l'image Docker..."
-                dir("${env.PROJECT_DIR}") {
-                    sh "docker build -t ${env.DOCKER_IMAGE} ."
-                }
-            }
-        }
-
-        stage('Deploy with Docker Compose') {
-            steps {
-                echo '🚀 Déploiement avec Docker Compose...'
-                dir("${env.PROJECT_DIR}") {
-                    sh 'docker-compose up -d'
-                }
+                 dir("exp1-spring"){
+                     sh " docker compose up -d"
+                 }
             }
         }
     }
-
-    post {
-        success {
-            echo 'Pipeline exécuté avec succès !'
-        }
-        failure {
-            echo 'Échec du pipeline. Vérifiez les logs.'
-        }
-    }
 }
+            
